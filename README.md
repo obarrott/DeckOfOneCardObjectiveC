@@ -78,14 +78,16 @@ Handle the errors, also check if there is not data coming back. Then create a UI
 ## Part 3
 ### DVMCardViewController 
 
-* Hook up the two outlets for the UIImageImageView and the UILabel. Add an action for the button to draw a card. For the views to display we need to call our 2 methods in the DVMCardController. Make a new method -(void)updateViews {. Call the  [[DVMCardController sharedController] drawNewCard method. Plug in the amount of cards you want the user to see in the drawNewCard parameter. We have an array coming back so we need to get one card out of the array of cards. Try this on your own for 5 minutes. You should come up with something like this DVMCard *card = [cards objectAtIndex:0]; . Now we want UI elements to be on the main thread. First, the string of the card suit will comeback. It should look like this     
-dispatch_async(dispatch_get_main_queue(), ^{
-            self.suitLabel.text = card.suit;
-        });
-After that, but still within the drawNewCard scope, add 
- [[DVMCardController sharedController] fetchCardImage:card completion:^(UIImage *image, NSError *error) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.cardImageView.image = image;
-            });
-* This will take in the same card object that we fetched first, that way we have the single card to plug in to fetch the image. Lastly we dispatch the cardIMageView on to the main thread, where we are completing with an image and setting it equal to the UIIMageView outlet. You may need to check your p-list. And just like that we got a simple card app! Nice work. 
+Welcome back to Swift!!
+
+* Create a new Cocoa Touch Class file while making sure to set the language to Swift. You will be asked if you want to create a "Bridging Header" file, make sure you select yes. A new ".h" file will appear for your bridging header file and within this file you need to import your CardController.h file to access your fetch methods.
+
+* Create a property called cards to hold your card array which is set to an empty array
+
+* Drag out your the Outlets and Actions from the storyboard, remember Actions go BELOW the viewDidLoad
+
+* To help keep our code as clean as possible, create a Method for "draw card" which takes in no paramaters. Inside this method call your fetch functions, first for the card and then for the image. After fetching your card(s) make sure to assign the value of cards returned to your local cards property. Subscript into your array of cards to grab the first card to display. Now call your fetch image method and remember to update your image and suit label on the main thread.
+
+* After completing your "draw card" method call it in the action for your drawCardButton, you can also call it in your viewDidLoad if you wish to have a card populate when the app is launched. 
+
+* Congrats, you should now have a fully functioning app blending Objective-C and our best friend Swift. Nice job!
